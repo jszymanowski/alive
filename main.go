@@ -12,14 +12,20 @@ import (
 	"github.com/jszymanowski/alive/models"
 )
 
-func main() {
-
+func initDB() {
 	db, err := gorm.Open(sqlite.Open("db/development.db"), &gorm.Config{})
 	if err != nil {
-		panic("failed to connect database")
+		panic("failed to connect database: " + err.Error())
 	}
 
-	db.AutoMigrate(&models.Feature{})
+	migrateErr := db.AutoMigrate(&models.Feature{})
+	if migrateErr != nil {
+		panic("failed to migrate database: " + migrateErr.Error())
+	}
+}
+
+func main() {
+	initDB()
 
 	r := chi.NewRouter()
 
