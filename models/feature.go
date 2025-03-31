@@ -7,11 +7,11 @@ import (
 )
 
 type Feature struct {
-	ID          uint `gorm:"primaryKey"`
-	Name        string
+	ID          uint   `gorm:"primaryKey"`
+	Name        string `gorm:"not null"`
 	Description string
 	Enabled     bool
-	Slug        string `gorm:"uniqueIndex"`
+	Slug        string `gorm:"uniqueIndex;not null"`
 
 	CreatedAt time.Time
 	UpdatedAt time.Time
