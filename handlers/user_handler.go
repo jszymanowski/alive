@@ -3,7 +3,9 @@ package handlers
 import (
 	"encoding/json"
 	"net/http"
+	"strconv"
 
+	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/render"
 
 	"github.com/jszymanowski/alive/models"
@@ -50,6 +52,25 @@ func (h *UserHandler) GetAll(w http.ResponseWriter, r *http.Request) {
 
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(users)
+}
+
+func (h *UserHandler) GetByID(w http.ResponseWriter, r *http.Request) {
+	idStr := chi.URLParam(r, "ID")
+	idUint, err := strconv.ParseUint(idStr, 10, 64)
+	if err != nil {
+		// Handle the error - the ID is not a valid number
+		render.Render(w, r, ErrInvalidRequest(err))
+		return
+	}
+
+	user, err := h.repo.FindByID(uint(idUint))
+	if err != nil {
+		http.Error(w, "Database error", http.StatusInternalServerError)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(user)
 }
 
 type UserPayload struct {
