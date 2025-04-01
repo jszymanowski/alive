@@ -11,7 +11,7 @@ type Feature struct {
 	Name        string `gorm:"not null"`
 	Description string
 	Enabled     bool
-	Slug        string `gorm:"uniqueIndex;not null"`
+	Slug        string `gorm:"uniqueIndex"`
 
 	CreatedAt time.Time
 	UpdatedAt time.Time
