@@ -12,7 +12,7 @@ import (
 	"github.com/jszymanowski/alive/repositories"
 )
 
-func TestUserRepository_WithSQLite(t *testing.T) {
+func TestUserRepository(t *testing.T) {
 	// Setup in-memory SQLite database
 	db, err := gorm.Open(sqlite.Open("file::memory:?cache=shared"), &gorm.Config{})
 	require.NoError(t, err)
@@ -35,4 +35,22 @@ func TestUserRepository_WithSQLite(t *testing.T) {
 	assert.Equal(t, testUser.ID, user.ID)
 	assert.Equal(t, "Test User", user.Name)
 	assert.Equal(t, "test@example.com", user.Email)
+}
+
+func TestUserRepository_FindByID_NonExistent(t *testing.T) {
+	// Setup in-memory SQLite database
+	db, err := gorm.Open(sqlite.Open("file::memory:?cache=shared"), &gorm.Config{})
+	require.NoError(t, err)
+
+	// Auto migrate schema
+	err = db.AutoMigrate(&models.User{})
+	require.NoError(t, err)
+
+	// Initialize repository with SQLite DB
+	repo := repositories.NewUserRepository(db)
+
+	// Test FindByID with non-existent ID
+	user, err := repo.FindByID(999) // assuming 999 doesn't exist
+	assert.Error(t, err)
+	assert.Nil(t, user)
 }

@@ -20,10 +20,13 @@ func (r *UserRepository) FindAll() ([]models.User, error) {
 	return users, result.Error
 }
 
-func (r *UserRepository) FindByID(id uint) (models.User, error) {
+func (r *UserRepository) FindByID(id uint) (*models.User, error) {
 	var user models.User
-	result := r.DB.First(&user, id)
-	return user, result.Error
+	result := r.DB.Take(&user, id)
+	if result.Error != nil {
+		return nil, result.Error
+	}
+	return &user, nil
 }
 
 func (r *UserRepository) Create(user *models.User) error {
