@@ -21,7 +21,8 @@ func SetupTestDB(t *testing.T) *gorm.DB {
 
 	t.Cleanup(func() {
 		sqlDB, _ := db.DB()
-		sqlDB.Close()
+		err := sqlDB.Close()
+		require.NoError(t, err)
 	})
 
 	return db

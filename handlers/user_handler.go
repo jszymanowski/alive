@@ -51,15 +51,20 @@ func (h *UserHandler) GetAll(w http.ResponseWriter, r *http.Request) {
 	}
 
 	w.Header().Set("Content-Type", "application/json")
-	json.NewEncoder(w).Encode(users)
+	encodeErr := json.NewEncoder(w).Encode(users)
+	if encodeErr != nil {
+		http.Error(w, "Failed to encode response", http.StatusInternalServerError)
+		return
+	}
 }
 
 func (h *UserHandler) GetByID(w http.ResponseWriter, r *http.Request) {
 	idStr := chi.URLParam(r, "ID")
 	idUint, err := strconv.ParseUint(idStr, 10, 64)
 	if err != nil {
-		// Handle the error - the ID is not a valid number
-		render.Render(w, r, ErrInvalidRequest(err))
+		if render.Render(w, r, ErrInvalidRequest(err)) != nil {
+			http.Error(w, "Failed to bind request", http.StatusBadRequest)
+		}
 		return
 	}
 
@@ -70,7 +75,11 @@ func (h *UserHandler) GetByID(w http.ResponseWriter, r *http.Request) {
 	}
 
 	w.Header().Set("Content-Type", "application/json")
-	json.NewEncoder(w).Encode(user)
+	encodeErr := json.NewEncoder(w).Encode(user)
+	if encodeErr != nil {
+		http.Error(w, "Failed to encode response", http.StatusInternalServerError)
+		return
+	}
 }
 
 type UserPayload struct {
@@ -85,7 +94,9 @@ func (h *UserHandler) Create(w http.ResponseWriter, r *http.Request) {
 	data := &UserPayload{}
 
 	if err := render.Bind(r, data); err != nil {
-		render.Render(w, r, ErrInvalidRequest(err))
+		if render.Render(w, r, ErrInvalidRequest(err)) != nil {
+			http.Error(w, "Failed to bind request", http.StatusBadRequest)
+		}
 		return
 	}
 
@@ -98,5 +109,9 @@ func (h *UserHandler) Create(w http.ResponseWriter, r *http.Request) {
 	}
 
 	w.Header().Set("Content-Type", "application/json")
-	json.NewEncoder(w).Encode(createdUser)
+	encodeErr := json.NewEncoder(w).Encode(createdUser)
+	if encodeErr != nil {
+		http.Error(w, "Failed to encode response", http.StatusInternalServerError)
+		return
+	}
 }

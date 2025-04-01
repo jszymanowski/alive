@@ -31,7 +31,6 @@ func initDB() *gorm.DB {
 func main() {
 	db := initDB()
 
-	// Setup repositories and handlers
 	userRepo := repositories.NewUserRepository(db)
 	userHandler := handlers.NewUserHandler(userRepo)
 
@@ -39,17 +38,14 @@ func main() {
 
 	r.Use(middleware.Logger)
 
-	r.Get("/", func(w http.ResponseWriter, r *http.Request) {
-		w.Write([]byte("Hello World!"))
-	})
-
-	// Routes
 	r.Route("/users", func(r chi.Router) {
 		r.Get("/", userHandler.GetAll)
 		r.Post("/", userHandler.Create)
 		r.Get("/{id}", userHandler.GetByID)
-		// Add more routes...
 	})
 
-	http.ListenAndServe(":3000", r)
+	err := http.ListenAndServe(":3000", r)
+	if err != nil {
+		panic("failed to start server: " + err.Error())
+	}
 }
