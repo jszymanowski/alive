@@ -51,6 +51,7 @@ func TestUserRepository_FindByID_NotFound(t *testing.T) {
 	user, err := repo.FindByID(9999999999)
 	assert.Error(t, err)
 	assert.Nil(t, user)
+	assert.Contains(t, err.Error(), "record not found")
 }
 
 func TestUserRepository_FindAll(t *testing.T) {
@@ -95,7 +96,7 @@ func TestUserRepository_Create(t *testing.T) {
 	assert.NotNil(t, createdUser)
 }
 
-func TestUserRepository_Create_Invalid(t *testing.T) {
+func TestUserRepository_Create_InvalidName(t *testing.T) {
 	db := SetupTestDB(t)
 	repo := repositories.NewUserRepository(db)
 
@@ -103,6 +104,19 @@ func TestUserRepository_Create_Invalid(t *testing.T) {
 	createdUser, err := repo.Create(newUser)
 	assert.Nil(t, createdUser)
 	assert.Error(t, err)
+	assert.Contains(t, err.Error(), "Key: 'User.Name' Error:Field validation for 'Name' failed on the 'required' tag")
+
+}
+
+func TestUserRepository_Create_InvalidEmail(t *testing.T) {
+	db := SetupTestDB(t)
+	repo := repositories.NewUserRepository(db)
+
+	newUser := &models.User{Name: "Test User", Email: "newexamplecom"}
+	createdUser, err := repo.Create(newUser)
+	assert.Nil(t, createdUser)
+	assert.Error(t, err)
+	assert.Contains(t, err.Error(), "Key: 'User.Email' Error:Field validation for 'Email' failed on the 'email' tag")
 }
 
 func TestUserRepository_Create_EmailExists(t *testing.T) {
@@ -114,8 +128,10 @@ func TestUserRepository_Create_EmailExists(t *testing.T) {
 
 	repo := repositories.NewUserRepository(db)
 
-	newUser := &models.User{Email: "test@example.com"}
+	newUser := &models.User{Name: "Test User", Email: "test@example.com"}
 	createdUser, err := repo.Create(newUser)
 	assert.Error(t, err)
 	assert.Nil(t, createdUser)
+	assert.Contains(t, err.Error(), "UNIQUE constraint failed: users.email")
+
 }
