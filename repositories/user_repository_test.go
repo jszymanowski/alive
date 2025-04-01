@@ -84,3 +84,38 @@ func TestUserRepository_FindAll_WithNone(t *testing.T) {
 
 	assert.Len(t, users, 0)
 }
+
+func TestUserRepository_Create(t *testing.T) {
+	db := SetupTestDB(t)
+	repo := repositories.NewUserRepository(db)
+
+	newUser := &models.User{Name: "New User", Email: "new@example.com"}
+	createdUser, err := repo.Create(newUser)
+	require.NoError(t, err)
+	assert.NotNil(t, createdUser)
+}
+
+func TestUserRepository_Create_Invalid(t *testing.T) {
+	db := SetupTestDB(t)
+	repo := repositories.NewUserRepository(db)
+
+	newUser := &models.User{Email: "new@example.com"}
+	createdUser, err := repo.Create(newUser)
+	assert.Nil(t, createdUser)
+	assert.Error(t, err)
+}
+
+func TestUserRepository_Create_EmailExists(t *testing.T) {
+	db := SetupTestDB(t)
+
+	testUser := models.User{Name: "Existing User", Email: "test@example.com"}
+	result := db.Create(&testUser)
+	require.NoError(t, result.Error)
+
+	repo := repositories.NewUserRepository(db)
+
+	newUser := &models.User{Email: "test@example.com"}
+	createdUser, err := repo.Create(newUser)
+	assert.Error(t, err)
+	assert.Nil(t, createdUser)
+}
