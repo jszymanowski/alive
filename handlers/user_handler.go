@@ -91,12 +91,12 @@ func (h *UserHandler) Create(w http.ResponseWriter, r *http.Request) {
 
 	user := data.User
 
-	err := h.repo.Create(user)
+	createdUser, err := h.repo.Create(user)
 	if err != nil {
 		http.Error(w, "Database error", http.StatusInternalServerError)
 		return
 	}
 
 	w.Header().Set("Content-Type", "application/json")
-	json.NewEncoder(w).Encode(user)
+	json.NewEncoder(w).Encode(createdUser)
 }
