@@ -14,7 +14,7 @@ import (
 func TestUserRepository_FindByID_Found(t *testing.T) {
 	db := utilities.SetupTestDB(t)
 
-	testUser := models.User{Name: "Test User", Email: "test@example.com"}
+	testUser := utilities.BuildUser()
 	result := db.Create(&testUser)
 	require.NoError(t, result.Error)
 
@@ -42,8 +42,8 @@ func TestUserRepository_FindAll(t *testing.T) {
 	db := utilities.SetupTestDB(t)
 
 	testUsers := []*models.User{
-		{Name: "Test User 1", Email: "test1@example.com"},
-		{Name: "Test User 2", Email: "test2@example.com"},
+		utilities.BuildUser(models.User{Name: "Test User 1", Email: "test1@example.com"}),
+		utilities.BuildUser(models.User{Name: "Test User 2", Email: "test2@example.com"}),
 	}
 	result := db.Create(&testUsers)
 	require.NoError(t, result.Error)
@@ -74,7 +74,7 @@ func TestUserRepository_Create(t *testing.T) {
 	db := utilities.SetupTestDB(t)
 	repo := repositories.NewUserRepository(db)
 
-	newUser := &models.User{Name: "New User", Email: "new@example.com"}
+	newUser := utilities.BuildUser()
 	createdUser, err := repo.Create(newUser)
 	require.NoError(t, err)
 	assert.NotNil(t, createdUser)

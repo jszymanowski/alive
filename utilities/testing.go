@@ -25,3 +25,21 @@ func SetupTestDB(t *testing.T) *gorm.DB {
 
 	return db
 }
+
+func BuildUser(overrides ...models.User) *models.User {
+	user := &models.User{
+		Name:  "Test User",
+		Email: "test@example.com",
+	}
+
+	for _, override := range overrides {
+		if override.Name != "" {
+			user.Name = override.Name
+		}
+		if override.Email != "" {
+			user.Email = override.Email
+		}
+	}
+
+	return user
+}
