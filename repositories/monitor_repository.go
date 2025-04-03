@@ -47,6 +47,7 @@ func (r *MonitorRepository) Create(monitor *models.Monitor) (*models.Monitor, er
 	}
 
 	// Generate slug if not provided
+	// TODO: TestMonitorRepository_Create trips validation error, unless slug is provided -- it should be generated
 	if monitor.Slug == "" {
 		monitor.Slug = generateSlug(monitor.Name)
 	}

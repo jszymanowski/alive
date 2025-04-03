@@ -75,7 +75,7 @@ func TestMonitorRepository_FindAll_WithNone(t *testing.T) {
 func TestMonitorRepository_Create(t *testing.T) {
 	db := utilities.SetupTestDB(t)
 	repo := repositories.NewMonitorRepository(db)
-	newMonitor := fixtures.BuildMonitor()
+	newMonitor := fixtures.BuildMonitor(fixtures.WithSlug("test-monitor"))
 	createdMonitor, err := repo.Create(newMonitor)
 	require.NoError(t, err)
 	assert.NotNil(t, createdMonitor)
