@@ -31,12 +31,21 @@ func initDB() *gorm.DB {
 func main() {
 	db := initDB()
 
+	monitorRepo := repositories.NewMonitorRepository(db)
+	monitorHandler := handlers.NewMonitorHandler(monitorRepo)
+
 	userRepo := repositories.NewUserRepository(db)
 	userHandler := handlers.NewUserHandler(userRepo)
 
 	r := chi.NewRouter()
 
 	r.Use(middleware.Logger)
+
+	r.Route("/monitors", func(r chi.Router) {
+		r.Get("/", monitorHandler.GetAll)
+		r.Post("/", monitorHandler.Create)
+		r.Get("/{id}", monitorHandler.GetByID)
+	})
 
 	r.Route("/users", func(r chi.Router) {
 		r.Get("/", userHandler.GetAll)
