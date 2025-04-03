@@ -5,31 +5,14 @@ import (
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
-	"gorm.io/driver/sqlite"
-	"gorm.io/gorm"
 
 	"github.com/jszymanowski/alive/models"
 	"github.com/jszymanowski/alive/repositories"
+	"github.com/jszymanowski/alive/utilities"
 )
 
-func SetupTestDB(t *testing.T) *gorm.DB {
-	db, err := gorm.Open(sqlite.Open("file::memory:"), &gorm.Config{})
-	require.NoError(t, err)
-
-	err = db.AutoMigrate(&models.User{})
-	require.NoError(t, err)
-
-	t.Cleanup(func() {
-		sqlDB, _ := db.DB()
-		err := sqlDB.Close()
-		require.NoError(t, err)
-	})
-
-	return db
-}
-
 func TestUserRepository_FindByID_Found(t *testing.T) {
-	db := SetupTestDB(t)
+	db := utilities.SetupTestDB(t)
 
 	testUser := models.User{Name: "Test User", Email: "test@example.com"}
 	result := db.Create(&testUser)
@@ -45,7 +28,7 @@ func TestUserRepository_FindByID_Found(t *testing.T) {
 }
 
 func TestUserRepository_FindByID_NotFound(t *testing.T) {
-	db := SetupTestDB(t)
+	db := utilities.SetupTestDB(t)
 
 	repo := repositories.NewUserRepository(db)
 
@@ -56,7 +39,7 @@ func TestUserRepository_FindByID_NotFound(t *testing.T) {
 }
 
 func TestUserRepository_FindAll(t *testing.T) {
-	db := SetupTestDB(t)
+	db := utilities.SetupTestDB(t)
 
 	testUsers := []*models.User{
 		{Name: "Test User 1", Email: "test1@example.com"},
@@ -78,7 +61,7 @@ func TestUserRepository_FindAll(t *testing.T) {
 }
 
 func TestUserRepository_FindAll_WithNone(t *testing.T) {
-	db := SetupTestDB(t)
+	db := utilities.SetupTestDB(t)
 	repo := repositories.NewUserRepository(db)
 
 	users, err := repo.FindAll()
@@ -88,7 +71,7 @@ func TestUserRepository_FindAll_WithNone(t *testing.T) {
 }
 
 func TestUserRepository_Create(t *testing.T) {
-	db := SetupTestDB(t)
+	db := utilities.SetupTestDB(t)
 	repo := repositories.NewUserRepository(db)
 
 	newUser := &models.User{Name: "New User", Email: "new@example.com"}
@@ -98,7 +81,7 @@ func TestUserRepository_Create(t *testing.T) {
 }
 
 func TestUserRepository_Create_InvalidName(t *testing.T) {
-	db := SetupTestDB(t)
+	db := utilities.SetupTestDB(t)
 	repo := repositories.NewUserRepository(db)
 
 	newUser := &models.User{Email: "new@example.com"}
@@ -110,7 +93,7 @@ func TestUserRepository_Create_InvalidName(t *testing.T) {
 }
 
 func TestUserRepository_Create_InvalidEmail(t *testing.T) {
-	db := SetupTestDB(t)
+	db := utilities.SetupTestDB(t)
 	repo := repositories.NewUserRepository(db)
 
 	newUser := &models.User{Name: "Test User", Email: "newexamplecom"}
@@ -121,7 +104,7 @@ func TestUserRepository_Create_InvalidEmail(t *testing.T) {
 }
 
 func TestUserRepository_Create_EmailExists(t *testing.T) {
-	db := SetupTestDB(t)
+	db := utilities.SetupTestDB(t)
 
 	testUser := models.User{Name: "Existing User", Email: "test@example.com"}
 	result := db.Create(&testUser)
