@@ -50,10 +50,11 @@ func TestMonitorRepository_FindAll(t *testing.T) {
 
 	repo := repositories.NewMonitorRepository(db)
 
-	monitors, err := repo.FindAll()
+	monitors, total, err := repo.FindAll(1, 10)
 	require.NoError(t, err)
 
 	assert.Len(t, monitors, 2)
+	assert.Equal(t, int64(2), total)
 	assert.Equal(t, "Test Monitor 1", monitors[0].Name)
 	assert.Equal(t, "Test Monitor 2", monitors[1].Name)
 }
@@ -62,20 +63,24 @@ func TestMonitorRepository_FindAll_WithNone(t *testing.T) {
 	db := utilities.SetupTestDB(t)
 	repo := repositories.NewMonitorRepository(db)
 
-	monitors, err := repo.FindAll()
+	monitors, total, err := repo.FindAll(1, 10)
 	require.NoError(t, err)
 
 	assert.Len(t, monitors, 0)
+	assert.Equal(t, int64(0), total)
 }
 
 func TestMonitorRepository_Create(t *testing.T) {
 	db := utilities.SetupTestDB(t)
 	repo := repositories.NewMonitorRepository(db)
-
 	newMonitor := fixtures.BuildMonitor()
 	createdMonitor, err := repo.Create(newMonitor)
 	require.NoError(t, err)
 	assert.NotNil(t, createdMonitor)
+	assert.NotZero(t, createdMonitor.ID)
+	assert.Equal(t, newMonitor.Name, createdMonitor.Name)
+	assert.Equal(t, newMonitor.Slug, createdMonitor.Slug)
+	assert.Equal(t, newMonitor.Status, createdMonitor.Status)
 }
 
 func TestMonitorRepository_Create_InvalidName(t *testing.T) {

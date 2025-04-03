@@ -1,7 +1,8 @@
 package repositories
 
 import (
-	"github.com/go-playground/validator/v10"
+	"strings"
+
 	"gorm.io/gorm"
 
 	"github.com/jszymanowski/alive/models"
@@ -16,14 +17,19 @@ func NewMonitorRepository(db *gorm.DB) *MonitorRepository {
 }
 
 func ValidateMonitor(monitor *models.Monitor) error {
-	validate := validator.New()
 	return validate.Struct(monitor)
 }
 
-func (r *MonitorRepository) FindAll() ([]models.Monitor, error) {
+func (r *MonitorRepository) FindAll(page, pageSize int) ([]models.Monitor, int64, error) {
 	var monitors []models.Monitor
-	result := r.DB.Find(&monitors)
-	return monitors, result.Error
+	var total int64
+
+	r.DB.Model(&models.Monitor{}).Count(&total)
+
+	offset := (page - 1) * pageSize
+	result := r.DB.Offset(offset).Limit(pageSize).Find(&monitors)
+
+	return monitors, total, result.Error
 }
 
 func (r *MonitorRepository) FindByID(id uint) (*models.Monitor, error) {
@@ -40,9 +46,21 @@ func (r *MonitorRepository) Create(monitor *models.Monitor) (*models.Monitor, er
 		return nil, err
 	}
 
+	// Generate slug if not provided
+	if monitor.Slug == "" {
+		monitor.Slug = generateSlug(monitor.Name)
+	}
+
 	result := r.DB.Create(monitor)
 	if result.Error != nil {
 		return nil, result.Error
 	}
 	return monitor, nil
+}
+
+func generateSlug(name string) string {
+	// Replace spaces with hyphens, remove special characters,
+	// convert to lowercase, etc.
+	// This is a placeholder - implement a proper slug generator
+	return strings.ToLower(strings.ReplaceAll(name, " ", "-"))
 }

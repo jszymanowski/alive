@@ -21,20 +21,20 @@ func BuildMonitor(options ...func(*models.Monitor)) *models.Monitor {
 
 // functional options pattern
 func WithDescription(description string) func(*models.Monitor) {
-	return func(u *models.Monitor) {
-		u.Description = description
+	return func(m *models.Monitor) {
+		m.Description = description
 	}
 }
 
 func WithName(name string) func(*models.Monitor) {
-	return func(u *models.Monitor) {
-		u.Name = name
+	return func(m *models.Monitor) {
+		m.Name = name
 	}
 }
 
 func WithSlug(slug string) func(*models.Monitor) {
-	return func(u *models.Monitor) {
-		u.Slug = slug
+	return func(m *models.Monitor) {
+		m.Slug = slug
 	}
 }
 

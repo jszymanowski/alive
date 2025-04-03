@@ -51,10 +51,11 @@ func TestUserRepository_FindAll(t *testing.T) {
 
 	repo := repositories.NewUserRepository(db)
 
-	users, err := repo.FindAll()
+	users, total, err := repo.FindAll(1, 10)
 	require.NoError(t, err)
 
 	assert.Len(t, users, 2)
+	assert.Equal(t, int64(2), total)
 	assert.Equal(t, "Test User 1", users[0].Name)
 	assert.Equal(t, "test1@example.com", users[0].Email)
 	assert.Equal(t, "Test User 2", users[1].Name)
@@ -65,10 +66,11 @@ func TestUserRepository_FindAll_WithNone(t *testing.T) {
 	db := utilities.SetupTestDB(t)
 	repo := repositories.NewUserRepository(db)
 
-	users, err := repo.FindAll()
+	users, total, err := repo.FindAll(1, 10)
 	require.NoError(t, err)
 
 	assert.Len(t, users, 0)
+	assert.Equal(t, int64(0), total)
 }
 
 func TestUserRepository_Create(t *testing.T) {

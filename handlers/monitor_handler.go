@@ -21,7 +21,7 @@ func NewMonitorHandler(repo *repositories.MonitorRepository) *MonitorHandler {
 }
 
 func (h *MonitorHandler) GetAll(w http.ResponseWriter, r *http.Request) {
-	monitors, err := h.repo.FindAll()
+	monitors, _, err := h.repo.FindAll(1, 100)
 	if err != nil {
 		http.Error(w, "Database error", http.StatusInternalServerError)
 		return

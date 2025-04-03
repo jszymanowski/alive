@@ -12,7 +12,7 @@ type Monitor struct {
 	Description string
 	Slug        string `gorm:"uniqueIndex"`
 	Status      string `gorm:"not null"` // TODO: add enum for status
-	UserID      uint   `gorm:"not null"`
+	UserID      uint   `gorm:"not null;foreignKey:ID;references:users"`
 
 	CreatedAt time.Time
 	UpdatedAt time.Time

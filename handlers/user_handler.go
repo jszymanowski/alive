@@ -21,7 +21,7 @@ func NewUserHandler(repo *repositories.UserRepository) *UserHandler {
 }
 
 func (h *UserHandler) GetAll(w http.ResponseWriter, r *http.Request) {
-	users, err := h.repo.FindAll()
+	users, _, err := h.repo.FindAll(1, 100)
 	if err != nil {
 		http.Error(w, "Database error", http.StatusInternalServerError)
 		return
