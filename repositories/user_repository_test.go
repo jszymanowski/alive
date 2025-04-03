@@ -6,6 +6,7 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
+	"github.com/jszymanowski/alive/fixtures"
 	"github.com/jszymanowski/alive/models"
 	"github.com/jszymanowski/alive/repositories"
 	"github.com/jszymanowski/alive/utilities"
@@ -14,7 +15,7 @@ import (
 func TestUserRepository_FindByID_Found(t *testing.T) {
 	db := utilities.SetupTestDB(t)
 
-	testUser := utilities.BuildUser()
+	testUser := fixtures.BuildUser()
 	result := db.Create(&testUser)
 	require.NoError(t, result.Error)
 
@@ -42,8 +43,8 @@ func TestUserRepository_FindAll(t *testing.T) {
 	db := utilities.SetupTestDB(t)
 
 	testUsers := []*models.User{
-		utilities.BuildUser(models.User{Name: "Test User 1", Email: "test1@example.com"}),
-		utilities.BuildUser(models.User{Name: "Test User 2", Email: "test2@example.com"}),
+		fixtures.BuildUser(models.User{Name: "Test User 1", Email: "test1@example.com"}),
+		fixtures.BuildUser(models.User{Name: "Test User 2", Email: "test2@example.com"}),
 	}
 	result := db.Create(&testUsers)
 	require.NoError(t, result.Error)
@@ -74,7 +75,7 @@ func TestUserRepository_Create(t *testing.T) {
 	db := utilities.SetupTestDB(t)
 	repo := repositories.NewUserRepository(db)
 
-	newUser := utilities.BuildUser()
+	newUser := fixtures.BuildUser()
 	createdUser, err := repo.Create(newUser)
 	require.NoError(t, err)
 	assert.NotNil(t, createdUser)

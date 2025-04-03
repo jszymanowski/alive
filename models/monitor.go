@@ -8,10 +8,10 @@ import (
 
 type Monitor struct {
 	ID          uint   `gorm:"primaryKey"`
-	Name        string `gorm:"not null"`
+	Name        string `gorm:"not null" validate:"required,min=3"`
 	Description string
 	Slug        string `gorm:"uniqueIndex"`
-	Status      string `gorm:"not null"`
+	Status      string `gorm:"not null"` // TODO: add enum for status
 	UserID      uint   `gorm:"not null"`
 
 	CreatedAt time.Time
