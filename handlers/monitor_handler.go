@@ -12,30 +12,30 @@ import (
 	"github.com/jszymanowski/alive/repositories"
 )
 
-type UserHandler struct {
-	repo *repositories.UserRepository
+type MonitorHandler struct {
+	repo *repositories.MonitorRepository
 }
 
-func NewUserHandler(repo *repositories.UserRepository) *UserHandler {
-	return &UserHandler{repo: repo}
+func NewMonitorHandler(repo *repositories.MonitorRepository) *MonitorHandler {
+	return &MonitorHandler{repo: repo}
 }
 
-func (h *UserHandler) GetAll(w http.ResponseWriter, r *http.Request) {
-	users, err := h.repo.FindAll()
+func (h *MonitorHandler) GetAll(w http.ResponseWriter, r *http.Request) {
+	monitors, err := h.repo.FindAll()
 	if err != nil {
 		http.Error(w, "Database error", http.StatusInternalServerError)
 		return
 	}
 
 	w.Header().Set("Content-Type", "application/json")
-	encodeErr := json.NewEncoder(w).Encode(users)
+	encodeErr := json.NewEncoder(w).Encode(monitors)
 	if encodeErr != nil {
 		http.Error(w, "Failed to encode response", http.StatusInternalServerError)
 		return
 	}
 }
 
-func (h *UserHandler) GetByID(w http.ResponseWriter, r *http.Request) {
+func (h *MonitorHandler) GetByID(w http.ResponseWriter, r *http.Request) {
 	idStr := chi.URLParam(r, "ID")
 	idUint, err := strconv.ParseUint(idStr, 10, 64)
 	if err != nil {
@@ -45,30 +45,30 @@ func (h *UserHandler) GetByID(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	user, err := h.repo.FindByID(uint(idUint))
+	monitor, err := h.repo.FindByID(uint(idUint))
 	if err != nil {
 		http.Error(w, "Database error", http.StatusInternalServerError)
 		return
 	}
 
 	w.Header().Set("Content-Type", "application/json")
-	encodeErr := json.NewEncoder(w).Encode(user)
+	encodeErr := json.NewEncoder(w).Encode(monitor)
 	if encodeErr != nil {
 		http.Error(w, "Failed to encode response", http.StatusInternalServerError)
 		return
 	}
 }
 
-type UserPayload struct {
-	*models.User
+type MonitorPayload struct {
+	*models.Monitor
 }
 
-func (u *UserPayload) Bind(r *http.Request) error {
+func (u *MonitorPayload) Bind(r *http.Request) error {
 	return nil
 }
 
-func (h *UserHandler) Create(w http.ResponseWriter, r *http.Request) {
-	data := &UserPayload{}
+func (h *MonitorHandler) Create(w http.ResponseWriter, r *http.Request) {
+	data := &MonitorPayload{}
 
 	if err := render.Bind(r, data); err != nil {
 		if render.Render(w, r, ErrInvalidRequest(err)) != nil {
@@ -77,16 +77,16 @@ func (h *UserHandler) Create(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	user := data.User
+	monitor := data.Monitor
 
-	createdUser, err := h.repo.Create(user)
+	createdMonitor, err := h.repo.Create(monitor)
 	if err != nil {
 		http.Error(w, "Database error", http.StatusInternalServerError)
 		return
 	}
 
 	w.Header().Set("Content-Type", "application/json")
-	encodeErr := json.NewEncoder(w).Encode(createdUser)
+	encodeErr := json.NewEncoder(w).Encode(createdMonitor)
 	if encodeErr != nil {
 		http.Error(w, "Failed to encode response", http.StatusInternalServerError)
 		return
