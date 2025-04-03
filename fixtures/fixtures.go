@@ -7,7 +7,7 @@ import (
 func BuildMonitor(options ...func(*models.Monitor)) *models.Monitor {
 	monitor := &models.Monitor{
 		Name:   "Some Monitor",
-		Slug:   "some-monitor-slug",
+		Slug:   "",
 		Status: "active",
 		UserID: 1,
 	}

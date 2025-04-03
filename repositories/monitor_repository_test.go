@@ -56,7 +56,9 @@ func TestMonitorRepository_FindAll(t *testing.T) {
 	assert.Len(t, monitors, 2)
 	assert.Equal(t, int64(2), total)
 	assert.Equal(t, "Test Monitor 1", monitors[0].Name)
+	assert.Equal(t, "test-monitor-1", monitors[0].Slug)
 	assert.Equal(t, "Test Monitor 2", monitors[1].Name)
+	assert.Equal(t, "test-monitor-2", monitors[1].Slug)
 }
 
 func TestMonitorRepository_FindAll_WithNone(t *testing.T) {
