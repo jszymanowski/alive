@@ -29,7 +29,7 @@
     "paths": {
       "@/*": ["./src/*"],
       "@root/*": ["./*"],
-      "@tests/*": ["./tests/*"],
+      "@tests/*": ["./tests/*"]
     }
   },
   "include": ["src", "tests"]
