@@ -6,7 +6,7 @@ import { TanStackRouterVite } from "@tanstack/router-plugin/vite";
 
 export default defineConfig({
   plugins: [
-    TanStackRouterVite({ target: "react", autoCodeSplitting: true }),react(),
+    TanStackRouterVite({ target: "react", autoCodeSplitting: true }), react(),
     tailwindcss()],
   resolve: {
     alias: {

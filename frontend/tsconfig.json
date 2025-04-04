@@ -30,8 +30,7 @@
       "@/*": ["./src/*"],
       "@root/*": ["./*"],
       "@tests/*": ["./tests/*"],
-      "@stories/*": ["./stories/*"]
     }
   },
-  "include": ["src", "stories", "tests"]
+  "include": ["src", "tests"]
 }
