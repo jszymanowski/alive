@@ -21,14 +21,38 @@ func NewMonitorHandler(repo *repositories.MonitorRepository) *MonitorHandler {
 }
 
 func (h *MonitorHandler) GetAll(w http.ResponseWriter, r *http.Request) {
-	monitors, _, err := h.repo.FindAll(1, 100)
+	page := 1
+	pageSize := 10
+
+	if pageParam := r.URL.Query().Get("page"); pageParam != "" {
+		if pageVal, err := strconv.Atoi(pageParam); err == nil && pageVal > 0 {
+			page = pageVal
+		}
+	}
+
+	if sizeParam := r.URL.Query().Get("size"); sizeParam != "" {
+		if sizeVal, err := strconv.Atoi(sizeParam); err == nil && sizeVal > 0 {
+			pageSize = sizeVal
+		}
+	}
+
+	monitors, total, err := h.repo.FindAll(page, pageSize)
 	if err != nil {
 		http.Error(w, "Database error", http.StatusInternalServerError)
 		return
 	}
 
+	response := map[string]interface{}{
+		"data": monitors,
+		"pagination": map[string]interface{}{
+			"page":  page,
+			"size":  pageSize,
+			"total": total,
+		},
+	}
+
 	w.Header().Set("Content-Type", "application/json")
-	encodeErr := json.NewEncoder(w).Encode(monitors)
+	encodeErr := json.NewEncoder(w).Encode(response)
 	if encodeErr != nil {
 		http.Error(w, "Failed to encode response", http.StatusInternalServerError)
 		return
@@ -36,7 +60,7 @@ func (h *MonitorHandler) GetAll(w http.ResponseWriter, r *http.Request) {
 }
 
 func (h *MonitorHandler) GetByID(w http.ResponseWriter, r *http.Request) {
-	idStr := chi.URLParam(r, "ID")
+	idStr := chi.URLParam(r, "id")
 	idUint, err := strconv.ParseUint(idStr, 10, 64)
 	if err != nil {
 		if render.Render(w, r, ErrInvalidRequest(err)) != nil {

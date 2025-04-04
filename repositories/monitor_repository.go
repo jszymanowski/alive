@@ -42,14 +42,12 @@ func (r *MonitorRepository) FindByID(id uint) (*models.Monitor, error) {
 }
 
 func (r *MonitorRepository) Create(monitor *models.Monitor) (*models.Monitor, error) {
-	if err := ValidateMonitor(monitor); err != nil {
-		return nil, err
-	}
-
-	// Generate slug if not provided
-	// TODO: TestMonitorRepository_Create trips validation error, unless slug is provided -- it should be generated
 	if monitor.Slug == "" {
 		monitor.Slug = generateSlug(monitor.Name)
+	}
+
+	if err := ValidateMonitor(monitor); err != nil {
+		return nil, err
 	}
 
 	result := r.DB.Create(monitor)
@@ -60,8 +58,5 @@ func (r *MonitorRepository) Create(monitor *models.Monitor) (*models.Monitor, er
 }
 
 func generateSlug(name string) string {
-	// Replace spaces with hyphens, remove special characters,
-	// convert to lowercase, etc.
-	// This is a placeholder - implement a proper slug generator
 	return strings.ToLower(strings.ReplaceAll(name, " ", "-"))
 }

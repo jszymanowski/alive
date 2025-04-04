@@ -38,6 +38,18 @@ func WithSlug(slug string) func(*models.Monitor) {
 	}
 }
 
+func WithStatus(status string) func(*models.Monitor) {
+	return func(m *models.Monitor) {
+		m.Status = status
+	}
+}
+
+func WithUserID(userID uint) func(*models.Monitor) {
+	return func(m *models.Monitor) {
+		m.UserID = userID
+	}
+}
+
 func BuildUser(options ...func(*models.User)) *models.User {
 	user := &models.User{
 		Name:  "Test User",

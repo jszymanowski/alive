@@ -76,7 +76,7 @@ func TestMonitorRepository_Create(t *testing.T) {
 	db := utilities.SetupTestDB(t)
 	repo := repositories.NewMonitorRepository(db)
 
-	newMonitor := fixtures.BuildMonitor(fixtures.WithSlug("test-monitor"))
+	newMonitor := fixtures.BuildMonitor()
 	createdMonitor, err := repo.Create(newMonitor)
 	require.NoError(t, err)
 
@@ -103,10 +103,22 @@ func TestMonitorRepository_Create_TooShortName(t *testing.T) {
 	db := utilities.SetupTestDB(t)
 	repo := repositories.NewMonitorRepository(db)
 
-	newMonitor := fixtures.BuildMonitor(fixtures.WithName("12"))
+	newMonitor := fixtures.BuildMonitor(fixtures.WithName("to"))
 	createdMonitor, err := repo.Create(newMonitor)
 
 	assert.Nil(t, createdMonitor)
 	assert.Error(t, err)
 	assert.Contains(t, err.Error(), "Key: 'Monitor.Name' Error:Field validation for 'Name' failed on the 'min' tag")
+}
+
+func TestMonitorRepository_Create_TooShortSlug(t *testing.T) {
+	db := utilities.SetupTestDB(t)
+	repo := repositories.NewMonitorRepository(db)
+
+	newMonitor := fixtures.BuildMonitor(fixtures.WithSlug("xy"))
+	createdMonitor, err := repo.Create(newMonitor)
+
+	assert.Nil(t, createdMonitor)
+	assert.Error(t, err)
+	assert.Contains(t, err.Error(), "Key: 'Monitor.Slug' Error:Field validation for 'Slug' failed on the 'min' tag")
 }
