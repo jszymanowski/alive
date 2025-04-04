@@ -33,11 +33,13 @@ export default function AuthProvider({ children }: { children: ReactNode }) {
     }
   }, [fetchUser, token]);
 
-  const login = async (token: string) => {
+  const login = async (token: string): Promise<boolean> => {
     try {
       tokenStore.setToken(token);
+      return true;
     } catch (error) {
       console.error("Login failed:", error);
+      return false;
     } finally {
       setLoading(false);
     }
