@@ -5,33 +5,17 @@ import (
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
-	"gorm.io/driver/sqlite"
-	"gorm.io/gorm"
 
+	"github.com/jszymanowski/alive/fixtures"
 	"github.com/jszymanowski/alive/models"
 	"github.com/jszymanowski/alive/repositories"
+	"github.com/jszymanowski/alive/utilities"
 )
 
-func SetupTestDB(t *testing.T) *gorm.DB {
-	db, err := gorm.Open(sqlite.Open("file::memory:"), &gorm.Config{})
-	require.NoError(t, err)
-
-	err = db.AutoMigrate(&models.User{})
-	require.NoError(t, err)
-
-	t.Cleanup(func() {
-		sqlDB, _ := db.DB()
-		err := sqlDB.Close()
-		require.NoError(t, err)
-	})
-
-	return db
-}
-
 func TestUserRepository_FindByID_Found(t *testing.T) {
-	db := SetupTestDB(t)
+	db := utilities.SetupTestDB(t)
 
-	testUser := models.User{Name: "Test User", Email: "test@example.com"}
+	testUser := fixtures.BuildUser()
 	result := db.Create(&testUser)
 	require.NoError(t, result.Error)
 
@@ -45,7 +29,7 @@ func TestUserRepository_FindByID_Found(t *testing.T) {
 }
 
 func TestUserRepository_FindByID_NotFound(t *testing.T) {
-	db := SetupTestDB(t)
+	db := utilities.SetupTestDB(t)
 
 	repo := repositories.NewUserRepository(db)
 
@@ -56,21 +40,22 @@ func TestUserRepository_FindByID_NotFound(t *testing.T) {
 }
 
 func TestUserRepository_FindAll(t *testing.T) {
-	db := SetupTestDB(t)
+	db := utilities.SetupTestDB(t)
 
 	testUsers := []*models.User{
-		{Name: "Test User 1", Email: "test1@example.com"},
-		{Name: "Test User 2", Email: "test2@example.com"},
+		fixtures.BuildUser(fixtures.WithUserName("Test User 1"), fixtures.WithUserEmail("test1@example.com")),
+		fixtures.BuildUser(fixtures.WithUserName("Test User 2"), fixtures.WithUserEmail("test2@example.com")),
 	}
 	result := db.Create(&testUsers)
 	require.NoError(t, result.Error)
 
 	repo := repositories.NewUserRepository(db)
 
-	users, err := repo.FindAll()
+	users, total, err := repo.FindAll(1, 10)
 	require.NoError(t, err)
 
 	assert.Len(t, users, 2)
+	assert.Equal(t, int64(2), total)
 	assert.Equal(t, "Test User 1", users[0].Name)
 	assert.Equal(t, "test1@example.com", users[0].Email)
 	assert.Equal(t, "Test User 2", users[1].Name)
@@ -78,27 +63,28 @@ func TestUserRepository_FindAll(t *testing.T) {
 }
 
 func TestUserRepository_FindAll_WithNone(t *testing.T) {
-	db := SetupTestDB(t)
+	db := utilities.SetupTestDB(t)
 	repo := repositories.NewUserRepository(db)
 
-	users, err := repo.FindAll()
+	users, total, err := repo.FindAll(1, 10)
 	require.NoError(t, err)
 
 	assert.Len(t, users, 0)
+	assert.Equal(t, int64(0), total)
 }
 
 func TestUserRepository_Create(t *testing.T) {
-	db := SetupTestDB(t)
+	db := utilities.SetupTestDB(t)
 	repo := repositories.NewUserRepository(db)
 
-	newUser := &models.User{Name: "New User", Email: "new@example.com"}
+	newUser := fixtures.BuildUser()
 	createdUser, err := repo.Create(newUser)
 	require.NoError(t, err)
 	assert.NotNil(t, createdUser)
 }
 
 func TestUserRepository_Create_InvalidName(t *testing.T) {
-	db := SetupTestDB(t)
+	db := utilities.SetupTestDB(t)
 	repo := repositories.NewUserRepository(db)
 
 	newUser := &models.User{Email: "new@example.com"}
@@ -110,7 +96,7 @@ func TestUserRepository_Create_InvalidName(t *testing.T) {
 }
 
 func TestUserRepository_Create_InvalidEmail(t *testing.T) {
-	db := SetupTestDB(t)
+	db := utilities.SetupTestDB(t)
 	repo := repositories.NewUserRepository(db)
 
 	newUser := &models.User{Name: "Test User", Email: "newexamplecom"}
@@ -121,7 +107,7 @@ func TestUserRepository_Create_InvalidEmail(t *testing.T) {
 }
 
 func TestUserRepository_Create_EmailExists(t *testing.T) {
-	db := SetupTestDB(t)
+	db := utilities.SetupTestDB(t)
 
 	testUser := models.User{Name: "Existing User", Email: "test@example.com"}
 	result := db.Create(&testUser)
