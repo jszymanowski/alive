@@ -3,8 +3,6 @@ import type { User } from "@/types";
 import { handleError } from "@/api/errorHandler";
 
 interface ResponseBody {
-  status: string;
-  message?: string;
   data: User;
 }
 
@@ -18,7 +16,7 @@ export const fetchCurrentUser = async (): Promise<User> => {
   }
 };
 
-export const createUser = async (params: User): Promise<User> => {
+export const createUser = async (params: Omit<User, "id">): Promise<User> => {
   try {
     const response = await axiosInstance.post<ResponseBody>(`/v1/users`, params);
     return response.data.data;

@@ -1,7 +1,7 @@
 export type DatabaseIdentifier = number;
 
 export interface User {
-  userId: DatabaseIdentifier;
+  id: DatabaseIdentifier;
   email: string;
   name: string;
 }
