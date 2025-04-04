@@ -1,7 +1,7 @@
 import axios from "axios";
 
 import { API_URL } from "@/config/environment";
-import { tokenStore } from "@/context/token-store"
+import { tokenStore } from "@/context/token-store";
 
 type Primitive = string | number | boolean | null | undefined;
 

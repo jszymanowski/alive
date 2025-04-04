@@ -2,9 +2,9 @@ import { redirect } from "@tanstack/react-router";
 import type { AuthContextType } from "@/context/AuthContext";
 
 const routes = {
-  login: '/auth/login',
-  summary: '/summary'
-}
+  login: "/auth/login",
+  summary: "/summary",
+};
 
 const redirectIfAuthenticated = (auth: AuthContextType) => {
   if (auth.isAuthenticated) {

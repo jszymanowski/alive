@@ -1,12 +1,10 @@
-import type {
-  User,
-  DatabaseIdentifier,
-} from "@/types";
+import type { DatabaseIdentifier, User } from "@/types";
 
-export const createDatabaseIdentifier = (): DatabaseIdentifier => Math.floor(Math.random() * 100_000);
+export const createDatabaseIdentifier = (): DatabaseIdentifier =>
+  Math.floor(Math.random() * 100_000);
 
 export const createUser = (overrides?: Partial<User>): User => ({
-  userId: createDatabaseIdentifier(),
+  id: createDatabaseIdentifier(),
   email: "montgomery.burns@snpp.com",
   name: "Monty",
   ...overrides,

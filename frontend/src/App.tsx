@@ -1,19 +1,10 @@
-<<<<<<< HEAD
-function App() {
-  return <>Hi</>;
-}
-
-export default App;
-=======
-import { RouterProvider, createRouter } from "@tanstack/react-router";
+import { createRouter, RouterProvider } from "@tanstack/react-router";
 
 import AuthProvider from "@/context/AuthProvider";
 import ThemeProvider from "@/context/ThemeProvider";
-
-import NotFoundErrorPage from "@/pages/NotFoundErrorPage";
-
-import { routeTree } from "@/routeTree.gen";
 import { useAuth } from "@/context/use-auth";
+import NotFoundErrorPage from "@/pages/NotFoundErrorPage";
+import { routeTree } from "@/routeTree.gen";
 
 const router = createRouter({
   routeTree,
@@ -39,12 +30,12 @@ const AppProviders = ({ children }: AppProvidersProps) => {
       <AuthProvider>{children}</AuthProvider>
     </ThemeProvider>
   );
-}
+};
 
 const InnerApp = () => {
   const auth = useAuth();
   return <RouterProvider router={router} context={{ auth }} />;
-}
+};
 
 const App = () => (
   <AppProviders>
@@ -52,5 +43,4 @@ const App = () => (
   </AppProviders>
 );
 
-export default App
->>>>>>> 018f6aa (Add AppProviders)
+export default App;

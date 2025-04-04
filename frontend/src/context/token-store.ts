@@ -1,4 +1,4 @@
-const TOKEN_NAME ='still-kicking-auth-token'
+const TOKEN_NAME = "still-kicking-auth-token";
 
 export const tokenStore = {
   subscribers: new Set<() => void>(),

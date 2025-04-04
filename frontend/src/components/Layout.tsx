@@ -1,7 +1,7 @@
 import { Box, Flex } from "@jszymanowski/breeze-react";
 
 interface Props {
-  children: React.ReactNode
+  children: React.ReactNode;
 }
 
 const Layout = ({ children }: Props) => (

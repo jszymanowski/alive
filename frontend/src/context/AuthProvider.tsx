@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState, useSyncExternalStore, type ReactNode } from "react";
+import { type ReactNode, useCallback, useEffect, useState, useSyncExternalStore } from "react";
 
 import { fetchCurrentUser } from "@/api/userApi";
 import { AuthContext } from "@/context/AuthContext";

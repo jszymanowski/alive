@@ -1,7 +1,6 @@
 import { createRootRouteWithContext, Outlet } from "@tanstack/react-router";
-
-import { ErrorFallback } from "@/pages/ErrorFallback";
 import type { AuthContextType } from "@/context/AuthContext";
+import { ErrorFallback } from "@/pages/ErrorFallback";
 
 interface RouterContext {
   auth: AuthContextType;
