@@ -19,7 +19,7 @@ describe("User API", () => {
 
     test("fails to retrieve the current user without a token", async () => {
       localStorage.clear();
-      
+
       try {
         await fetchCurrentUser();
       } catch (error) {

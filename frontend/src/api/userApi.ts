@@ -18,8 +18,6 @@ export const fetchCurrentUser = async (): Promise<User> => {
   }
 };
 
-
-
 export const createUser = async (params: Omit<User, "id">): Promise<User> => {
   try {
     const response = await axiosInstance.post<ResponseBody>(`/v1/users`, params);
