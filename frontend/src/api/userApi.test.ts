@@ -8,27 +8,16 @@ describe("User API", () => {
     localStorage.setItem("still-kicking-auth-token", "FAKE-TOKEN");
   });
 
-  describe.skip("fetchCurrentUser", () => {
+  describe("fetchCurrentUser", () => {
     test("retrieves the current user", async () => {
-      localStorage.setItem("still-kicking-auth-token", "FAKE-TOKEN");
-
       const result = await fetchCurrentUser();
       expect(result.email).to.equal("montgomery.burns@snpp.com");
       expect(result.name).to.equal("Monty");
     });
 
     test("fails to retrieve the current user without a token", async () => {
-      localStorage.clear();
-
-      try {
-        await fetchCurrentUser();
-      } catch (error) {
-        if (error instanceof Error) {
-          expect(error.message).to.equal("An unexpected error occurred");
-        } else {
-          throw error;
-        }
-      }
+      localStorage.clear(); // Remove the token
+      await expect(fetchCurrentUser()).rejects.toThrowError("An unexpected error occurred");
     });
   });
 
@@ -39,6 +28,17 @@ describe("User API", () => {
 
       expect(result.name).to.equal("Waylon");
       expect(result.email).to.equal("waylon.smithers@snpp.com");
+    });
+    
+    test("fails to create a user with missing name", async () => {
+      const createParams = { email: "waylon.smithers@snpp.com" } as any;
+      await expect(createUser(createParams)).rejects.toThrow();
+    });
+
+    test("fails to create a user when unauthorized", async () => {
+      localStorage.clear(); // Remove the token
+      const createParams = { name: "Waylon", email: "waylon.smithers@snpp.com" };
+      await expect(createUser(createParams)).rejects.toThrow();
     });
   });
 });
