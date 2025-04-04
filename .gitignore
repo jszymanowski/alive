@@ -23,3 +23,6 @@ go.work.sum
 
 # Database
 *.db
+
+# OS cruft
+.DS_Store

@@ -1,0 +1,31 @@
+name: Publish (Frontend app)
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - frontend/**
+
+jobs:
+  build:
+    runs-on: self-hosted
+    timeout-minutes: 5
+
+    defaults:
+      run:
+        working-directory: ./frontend
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Log in to GHCR
+        run: echo "${{ secrets.GHCR_PAT }}" | docker login ghcr.io -u "${{ secrets.GHCR_USERNAME }}" --password-stdin
+
+      - name: Build and push Docker image
+        run: |
+          docker build -t ghcr.io/${{ secrets.GHCR_USERNAME }}/still-kicking-frontend:latest .
+          docker tag ghcr.io/${{ secrets.GHCR_USERNAME }}/still-kicking-frontend:latest ghcr.io/${{ secrets.GHCR_USERNAME }}/still-kicking-frontend:${GITHUB_SHA::7}
+          docker push ghcr.io/${{ secrets.GHCR_USERNAME }}/still-kicking-frontend:latest
+          docker push ghcr.io/${{ secrets.GHCR_USERNAME }}/still-kicking-frontend:${GITHUB_SHA::7}
