@@ -19,7 +19,7 @@ export default function AuthProvider({ children }: { children: ReactNode }) {
     } catch (error) {
       console.error("Failed to fetch user:", error);
       logout();
-      window.location.href = routes.login();
+      window.location.href = routes.login;
     } finally {
       setLoading(false);
     }

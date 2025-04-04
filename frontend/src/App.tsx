@@ -1,24 +1,7 @@
-import { createRouter, RouterProvider } from "@tanstack/react-router";
-
 import AuthProvider from "@/context/AuthProvider";
 import ThemeProvider from "@/context/ThemeProvider";
-import { useAuth } from "@/context/use-auth";
-import NotFoundErrorPage from "@/pages/NotFoundErrorPage";
-import { routeTree } from "@/routeTree.gen";
 
-const router = createRouter({
-  routeTree,
-  context: {
-    auth: undefined!, // This will be set after we wrap the app in an AuthProvider
-  },
-  defaultNotFoundComponent: NotFoundErrorPage,
-});
-
-declare module "@tanstack/react-router" {
-  interface Register {
-    router: typeof router;
-  }
-}
+// import { useAuth } from "@/context/use-auth";
 
 interface AppProvidersProps {
   children: React.ReactNode;
@@ -33,8 +16,8 @@ const AppProviders = ({ children }: AppProvidersProps) => {
 };
 
 const InnerApp = () => {
-  const auth = useAuth();
-  return <RouterProvider router={router} context={{ auth }} />;
+  // const auth = useAuth();
+  return <>hi</>;
 };
 
 const App = () => (
