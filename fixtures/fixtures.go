@@ -38,20 +38,25 @@ func WithSlug(slug string) func(*models.Monitor) {
 	}
 }
 
-func BuildUser(overrides ...models.User) *models.User {
+func BuildUser(options ...func(*models.User)) *models.User {
 	user := &models.User{
 		Name:  "Test User",
 		Email: "test@example.com",
 	}
-
-	for _, override := range overrides {
-		if override.Name != "" {
-			user.Name = override.Name
-		}
-		if override.Email != "" {
-			user.Email = override.Email
-		}
+	for _, option := range options {
+		option(user)
 	}
-
 	return user
+}
+
+func WithUserName(name string) func(*models.User) {
+	return func(u *models.User) {
+		u.Name = name
+	}
+}
+
+func WithUserEmail(email string) func(*models.User) {
+	return func(u *models.User) {
+		u.Email = email
+	}
 }

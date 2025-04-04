@@ -43,8 +43,8 @@ func TestUserRepository_FindAll(t *testing.T) {
 	db := utilities.SetupTestDB(t)
 
 	testUsers := []*models.User{
-		fixtures.BuildUser(models.User{Name: "Test User 1", Email: "test1@example.com"}),
-		fixtures.BuildUser(models.User{Name: "Test User 2", Email: "test2@example.com"}),
+		fixtures.BuildUser(fixtures.WithUserName("Test User 1"), fixtures.WithUserEmail("test1@example.com")),
+		fixtures.BuildUser(fixtures.WithUserName("Test User 2"), fixtures.WithUserEmail("test2@example.com")),
 	}
 	result := db.Create(&testUsers)
 	require.NoError(t, result.Error)
