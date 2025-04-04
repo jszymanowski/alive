@@ -11,7 +11,10 @@
     "lint:ci": "biome ci .",
     "lint:fix": "biome check --write --unsafe .",
     "preview": "vite preview",
-    "serve": "node server.cjs"
+    "serve": "node server.cjs",
+    "test": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "test:debug": "vitest --run --inspect-brk --no-file-parallelism"
   },
   "dependencies": {
     "@jszymanowski/breeze-react": "0.7.0",
