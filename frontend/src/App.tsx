@@ -13,7 +13,7 @@ import ThemeProvider from "@/context/ThemeProvider";
 import NotFoundErrorPage from "@/pages/NotFoundErrorPage";
 
 import { routeTree } from "@/routeTree.gen";
-import { useAuth } from "@/context/useAuth";
+import { useAuth } from "@/context/use-auth";
 
 const router = createRouter({
   routeTree,
