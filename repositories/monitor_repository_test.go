@@ -75,9 +75,11 @@ func TestMonitorRepository_FindAll_WithNone(t *testing.T) {
 func TestMonitorRepository_Create(t *testing.T) {
 	db := utilities.SetupTestDB(t)
 	repo := repositories.NewMonitorRepository(db)
+
 	newMonitor := fixtures.BuildMonitor(fixtures.WithSlug("test-monitor"))
 	createdMonitor, err := repo.Create(newMonitor)
 	require.NoError(t, err)
+
 	assert.NotNil(t, createdMonitor)
 	assert.NotZero(t, createdMonitor.ID)
 	assert.Equal(t, newMonitor.Name, createdMonitor.Name)
@@ -90,10 +92,21 @@ func TestMonitorRepository_Create_InvalidName(t *testing.T) {
 	repo := repositories.NewMonitorRepository(db)
 
 	newMonitor := fixtures.BuildMonitor(fixtures.WithName(""))
-
 	createdMonitor, err := repo.Create(newMonitor)
 
 	assert.Nil(t, createdMonitor)
 	assert.Error(t, err)
 	assert.Contains(t, err.Error(), "Key: 'Monitor.Name' Error:Field validation for 'Name' failed on the 'required' tag")
+}
+
+func TestMonitorRepository_Create_TooShortName(t *testing.T) {
+	db := utilities.SetupTestDB(t)
+	repo := repositories.NewMonitorRepository(db)
+
+	newMonitor := fixtures.BuildMonitor(fixtures.WithName("12"))
+	createdMonitor, err := repo.Create(newMonitor)
+
+	assert.Nil(t, createdMonitor)
+	assert.Error(t, err)
+	assert.Contains(t, err.Error(), "Key: 'Monitor.Name' Error:Field validation for 'Name' failed on the 'min' tag")
 }
