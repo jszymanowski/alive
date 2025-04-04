@@ -1,7 +1,6 @@
 package repositories
 
 import (
-	"github.com/go-playground/validator/v10"
 	"gorm.io/gorm"
 
 	"github.com/jszymanowski/alive/models"
@@ -16,14 +15,19 @@ func NewUserRepository(db *gorm.DB) *UserRepository {
 }
 
 func ValidateUser(user *models.User) error {
-	validate := validator.New()
 	return validate.Struct(user)
 }
 
-func (r *UserRepository) FindAll() ([]models.User, error) {
+func (r *UserRepository) FindAll(page, pageSize int) ([]models.User, int64, error) {
 	var users []models.User
-	result := r.DB.Find(&users)
-	return users, result.Error
+	var total int64
+
+	r.DB.Model(&models.User{}).Count(&total)
+
+	offset := (page - 1) * pageSize
+	result := r.DB.Offset(offset).Limit(pageSize).Find(&users)
+
+	return users, total, result.Error
 }
 
 func (r *UserRepository) FindByID(id uint) (*models.User, error) {
