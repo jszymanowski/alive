@@ -18,8 +18,8 @@ importers:
         specifier: 4.1.2
         version: 4.1.2(vite@6.2.5(@types/node@22.13.17)(jiti@2.4.2)(lightningcss@1.29.2)(tsx@4.19.3))
       '@tanstack/react-form':
-        specifier: 1.0.5
-        version: 1.0.5(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(typescript@5.8.2)
+        specifier: 1.2.4
+        version: 1.2.4(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(typescript@5.8.2)
       axios:
         specifier: 1.8.4
         version: 1.8.4
@@ -720,11 +720,11 @@ packages:
     peerDependencies:
       vite: ^5.2.0 || ^6
 
-  '@tanstack/form-core@1.0.5':
-    resolution: {integrity: sha512-jLwdYKFTfdf9DcNLi9QS6sdHV3NsEsfWR0LHc5qosFfGS8WXQ/EAm8yr88jZyV4gvEO8XE8W2Sf7i4VAZnxxCQ==}
+  '@tanstack/form-core@1.2.4':
+    resolution: {integrity: sha512-s2augI1yvI9aZYxxElhHhSIDzbkdhQyttW8RpmSGOrnyfk7OMhYCx/OeXsYOaLr0Vp1leVZrk//s4rEDFLf/lA==}
 
-  '@tanstack/react-form@1.0.5':
-    resolution: {integrity: sha512-4e9Au0s2Uk7f2nlY0olte5s8k8vZHLjmqvRoVyw+rjzt0clDnryNJu3ZHuOaUcyG0vOG/Ame84q2voyImBKzFQ==}
+  '@tanstack/react-form@1.2.4':
+    resolution: {integrity: sha512-WvRNTWZOFZ4mb/cZYUxtnbIsZUcIG+vfjdkPQWLRnCtVTXzzkFoSS3zUUelew7RcbY4cAMDUOCezCBHzh5GNZQ==}
     peerDependencies:
       '@tanstack/react-start': ^1.112.0
       react: ^17.0.0 || ^18.0.0 || ^19.0.0
@@ -1030,8 +1030,8 @@ packages:
   decimal.js@10.5.0:
     resolution: {integrity: sha512-8vDa8Qxvr/+d94hSh5P3IJwI5t8/c0KsMp+g8bNw9cY2icONa5aPfvKeieW1WlG0WQYwwhJ7mjui2xtiePQSXw==}
 
-  decode-formdata@0.8.0:
-    resolution: {integrity: sha512-iUzDgnWsw5ToSkFY7VPFA5Gfph6ROoOxOB7Ybna4miUSzLZ4KaSJk6IAB2AdW6+C9vCVWhjjNA4gjT6wF3eZHQ==}
+  decode-formdata@0.9.0:
+    resolution: {integrity: sha512-q5uwOjR3Um5YD+ZWPOF/1sGHVW9A5rCrRwITQChRXlmPkxDFBqCm4jNTIVdGHNH9OnR+V9MoZVgRhsFb+ARbUw==}
 
   deep-eql@5.0.2:
     resolution: {integrity: sha512-h5k/5U50IJJFpzfL6nO9jaaumfjO/f2NjK/oYB2Djzm4p9L+3T9qWpZqZ2hAbLPuuYq9wrU08WQyBTL5GbPk5Q==}
@@ -2531,16 +2531,16 @@ snapshots:
       tailwindcss: 4.1.2
       vite: 6.2.5(@types/node@22.13.17)(jiti@2.4.2)(lightningcss@1.29.2)(tsx@4.19.3)
 
-  '@tanstack/form-core@1.0.5':
+  '@tanstack/form-core@1.2.4':
     dependencies:
       '@tanstack/store': 0.7.0
 
-  '@tanstack/react-form@1.0.5(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(typescript@5.8.2)':
+  '@tanstack/react-form@1.2.4(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(typescript@5.8.2)':
     dependencies:
       '@remix-run/node': 2.16.4(typescript@5.8.2)
-      '@tanstack/form-core': 1.0.5
+      '@tanstack/form-core': 1.2.4
       '@tanstack/react-store': 0.7.0(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
-      decode-formdata: 0.8.0
+      decode-formdata: 0.9.0
       react: 19.0.0
     transitivePeerDependencies:
       - react-dom
@@ -2859,7 +2859,7 @@ snapshots:
 
   decimal.js@10.5.0: {}
 
-  decode-formdata@0.8.0: {}
+  decode-formdata@0.9.0: {}
 
   deep-eql@5.0.2: {}
 
