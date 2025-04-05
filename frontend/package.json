@@ -11,13 +11,15 @@
     "lint:ci": "biome ci .",
     "lint:fix": "biome check --write --unsafe .",
     "preview": "vite preview",
-    "serve": "node server.cjs"
+    "serve": "node server.cjs",
+    "test": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "test:debug": "vitest --run --inspect-brk --no-file-parallelism"
   },
   "dependencies": {
     "@jszymanowski/breeze-react": "0.7.0",
     "@tailwindcss/vite": "4.1.2",
     "@tanstack/react-form": "1.0.5",
-    "@tanstack/react-router": "1.112.11",
     "axios": "1.8.4",
     "class-variance-authority": "0.7.1",
     "clsx": "2.1.1",
@@ -32,7 +34,6 @@
   "devDependencies": {
     "@biomejs/biome": "2.0.0-beta.1",
     "@jszymanowski/biomejs-config": "1.0.0",
-    "@tanstack/router-plugin": "1.114.31",
     "@testing-library/dom": "10.4.0",
     "@testing-library/jest-dom": "6.6.3",
     "@testing-library/react": "16.2.0",
@@ -42,6 +43,7 @@
     "@vitejs/plugin-react": "4.3.4",
     "globals": "15.15.0",
     "jsdom": "26.0.0",
+    "msw": "2.7.3",
     "typescript": "5.7.2",
     "vite": "6.2.5",
     "vitest": "3.0.9"
