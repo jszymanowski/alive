@@ -9,8 +9,8 @@ interface ResponseBody {
 }
 
 const API_ENDPOINTS = {
-  CURRENT_USER: '/v1/current_user',
-  USERS: '/v1/users'
+  CURRENT_USER: "/v1/current_user",
+  USERS: "/v1/users",
 };
 
 export const fetchCurrentUser = async (): Promise<User> => {

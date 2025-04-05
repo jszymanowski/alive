@@ -5,7 +5,7 @@ beforeAll(() => server.listen({ onUnhandledRequest: "error" }));
 
 afterEach(() => {
   localStorage.clear();
-  server.resetHandlers()
+  server.resetHandlers();
 });
 
 afterAll(() => server.close());

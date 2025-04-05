@@ -29,8 +29,9 @@ describe("User API", () => {
       expect(result.name).to.equal("Waylon");
       expect(result.email).to.equal("waylon.smithers@snpp.com");
     });
-    
+
     test("fails to create a user with missing name", async () => {
+      // biome-ignore lint/suspicious/noExplicitAny: Testing invalid params
       const createParams = { email: "waylon.smithers@snpp.com" } as any;
       await expect(createUser(createParams)).rejects.toThrow();
     });

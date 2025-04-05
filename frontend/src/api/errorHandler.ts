@@ -7,7 +7,7 @@ export const handleError = (error: unknown): string => {
     throw new ApiError(
       error.response.data?.message || "An unexpected error occurred",
       error.response.status,
-      error.response.data?.type
+      error.response.data?.type,
     );
   } else if (error instanceof Error) {
     return error.message;
