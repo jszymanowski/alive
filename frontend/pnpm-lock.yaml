@@ -85,7 +85,7 @@ importers:
         specifier: 26.0.0
         version: 26.0.0
       msw:
-        specifier: ^2.7.3
+        specifier: 2.7.3
         version: 2.7.3(@types/node@22.13.14)(typescript@5.7.2)
       typescript:
         specifier: 5.7.2
